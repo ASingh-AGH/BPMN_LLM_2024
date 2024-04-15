@@ -42,6 +42,7 @@ Actor-Activity Mapping:
 - Sales Department: [Order Received]
 - Storehouse: [Process Part List, Reserve Part (if available), Back-Order Part (if not available)]
 - Engineering Department: [Prepare for Assembling, Assemble Bicycle, Ship to Customer]
+
 Feel free to ask if you need any further clari cation or assistance! 
 �
 ��
