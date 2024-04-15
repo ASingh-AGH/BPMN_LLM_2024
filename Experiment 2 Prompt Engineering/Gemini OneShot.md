@@ -23,28 +23,50 @@
 ## Response
 BPMN Model for Customized Bicycle Manufacturing
 Start Event -> Order Received
+
 Order Received -> XOR Gateway 1
+
 XOR Gateway 1 -> (Order Rejected) End Event
+
 XOR Gateway 1 -> (Order Accepted) AND Gateway 2
+
 AND Gateway 2 -> Inform Storehouse
+
 AND Gateway 2 -> Inform Engineering Department
+
 Inform Storehouse -> Process Part List
+
 Process Part List -> Loop Gateway 3
+
 Loop Gateway 3 -> (Check Part Availability)
+
 Check Part Availability -> (Available) Reserve Part
+
 Reserve Part -> Loop Gateway 3 (Yes)
+
 Check Part Availability -> (Not Available) Back-Order Part
+
 Back-Order Part -> Loop Gateway 3 (Yes)
+
 Loop Gateway 3 -> (All Parts Processed) XOR Gateway 4
+
 XOR Gateway 4 -> (Preparation Not Finished) Wait
+
 Wait -> XOR Gateway 4 (Yes)
+
 Inform Engineering Department -> Prepare for Assembly
+
 Prepare for Assembly -> XOR Gateway 4 (Yes)
+
 XOR Gateway 4 -> (All Ready) Assemble Bicycle
+
 Assemble Bicycle -> Ship Bicycle
+
 Ship Bicycle -> End Event
+
 Mapping of Actors to Activities:
-Sales Department: [Order Received, Reject Order (XOR Gateway 1, le path), Accept
+
+- Sales Department: [Order Received, Reject Order (XOR Gateway 1, le path), Accept
 Order (XOR Gateway 1, right path), Ship Bicycle]
-Storehouse: [Process Part List, Reserve Part, Back-Order Part]
-Engineering Department: [Prepare for Assembly, Assemble Bicycle]
+- Storehouse: [Process Part List, Reserve Part, Back-Order Part]
+- Engineering Department: [Prepare for Assembly, Assemble Bicycle]
