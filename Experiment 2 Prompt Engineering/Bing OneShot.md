@@ -37,10 +37,11 @@ Certainly! Here’s the Business Process Model and Notation (BPMN) model for the
 13. Prepare for Assembling -> Task: Assemble Bicycle
 14. Task: Assemble Bicycle -> Task: Ship to Customer
 15. Task: Ship to Customer -> End Event
+
 Actor-Activity Mapping:
-Sales Department: [Order Received]
-Storehouse: [Process Part List, Reserve Part (if available), Back-Order Part (if not available)]
-Engineering Department: [Prepare for Assembling, Assemble Bicycle, Ship to Customer]
+- Sales Department: [Order Received]
+- Storehouse: [Process Part List, Reserve Part (if available), Back-Order Part (if not available)]
+- Engineering Department: [Prepare for Assembling, Assemble Bicycle, Ship to Customer]
 Feel free to ask if you need any further clari cation or assistance! 
 �
 ��
