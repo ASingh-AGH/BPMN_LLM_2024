@@ -1,4 +1,4 @@
-# Gemini OneShot 2
+# Gemini Two Shot + APE + DSP
 
 ## Prompt 
 
@@ -9,62 +9,77 @@
 
     Process description: A small company manufactures customized bicycles. Whenever the sales department receives an order, a new process instance is created. A member of the sales  department can then reject or accept the order for a customized bike. In the former case, the process instance is nished. In the latter case, the storehouse and the engineering department are informed. The storehouse immediately processes the part list of the order and checks the required quantity of each part. If the part is available in- hause, it is reserved. If it is not available, it is back-ordered. This procedure is repeated for each item on the part list. In the meantime, the engineering department prepares everything for the assembling of the ordered bicycle. If the storehouse successfully reserved or back-ordered every item of the part list and the preparation activity has nished, the engineering department assembles the bicycle. Afterwards, the sales department ships the bicycle to the customer and nishes the process instance
 
-    A good example of formatting is as follows,
+    Hint: A good example of formatting is as follows:
+    Start Event O -> Task [Describe Task]
+    Task [Describe Task] -> XOR Gateway 1
+    XOR Gateway 1 -> Condition (Describe Condition 1)
+    XOR Gateway 1 -> Condition (Describe Condition 2)
+    Condition (Describe Condition 1) -> Task [Describe Task]
+    Condition (Describe Condition 2) -> Event End O
+
+    Hint: Another good example of formatting is as follows:
     Start Event O -> Task [Receives an Order]
     Task [Receives an Order] -> XOR Gateway 1
     XOR Gateway 1 -> Condition (Order Rejected)
     XOR Gateway 1 -> Condition (Order Accepted)
     Condition (Order Rejected) -> Event End O
     Condition (Order Accepted) -> Task [Inform Storehouse and Engineering Department]
-
-
+    
+    Let’s work this out in a step by step way to be sure we have the right answer.
 
 ## Response
 
-### BPMN Model for Customized Bicycle Manufacturing
+### BPMN Model for Customized Bicycle Order Processing
 
-**Start Event O -> Task [Receive Order]**
+**Start Event - O -> Task [Receive Order]**
 
 **Task [Receive Order]** -> **XOR Gateway 1**
 
-**XOR Gateway 1** -> **Condition (Order Rejected)**
+**XOR Gateway 1** -> **Condition (Order Rejected)** ("No" decision)
 
-**Condition (Order Rejected)** -> **Event End O** (Process Finished)
+**Condition (Order Rejected)** -> **Event End - O**
 
-**XOR Gateway 1** -> **Condition (Order Accepted)**
+**XOR Gateway 1** -> **Condition (Order Accepted)** ("Yes" decision)
 
 **Condition (Order Accepted)** -> **Task [Inform Storehouse and Engineering Department]**
 
-**Task [Inform Storehouse and Engineering Department]** -> **Parallel Gateway (AND)**
+**Task [Inform Storehouse and Engineering Department]** -> **Parallel Gateway 2 (AND)**
 
-**Parallel Gateway (AND)** -> **Task [Process Part List (Storehouse)]**
+**Parallel Gateway 2 (AND)** -> **Task [Process Part List]**
 
-**Task [Process Part List (Storehouse)]** -> **Exclusive Gateway 2**
+**Task [Process Part List]** -> **Exclusive Gateway 3**
 
-**Exclusive Gateway 2** -> **Condition (Part Available)**
+**Exclusive Gateway 3** -> **Condition (Part Available)** ("Yes" decision)
 
-**Condition (Part Available)** -> **Task [Reserve Part (Storehouse)]**
+**Condition (Part Available)** -> **Task [Reserve Part]**
 
-**Condition (Part Available)** -> **Task [Backorder Part (Storehouse)]** (If not available)
+**Task [Reserve Part]** -> **Parallel Gateway 2 (AND)**  **(Rejoins with the other path)**
 
-**Exclusive Gateway 2** -> **Task [Repeat for Each Part (Storehouse)]** (Loop back to check next part)
+**Exclusive Gateway 3** -> **Condition (Part Back-Ordered)** ("No" decision)
 
-**Task [Repeat for Each Part (Storehouse)]** -> **Exclusive Gateway 3** (Check if all parts processed)
+**Condition (Part Back-Ordered)** -> **Task [Back-Order Part]**
 
-**Parallel Gateway (AND)** -> **Task [Prepare for Assembly (Engineering)]**
+**Task [Back-Order Part]** -> **Parallel Gateway 2 (AND)**  **(Rejoins with the other path)**
 
-**Exclusive Gateway 3** -> **Condition (All Parts Reserved/Backordered)**
+**Parallel Gateway 2 (AND)** -> **Task [Prepare for Assembly]** (**Wait** state until both paths complete)
 
-**Condition (All Parts Reserved/Backordered)** (Yes) -> **Task [Assemble Bicycle (Engineering)]**
+**Task [Prepare for Assembly]** -> **XOR Gateway 4**
 
-**Condition (All Parts Reserved/Backordered)** (No) -> **Event End Error O** (Process Halted due to missing parts)
+**XOR Gateway 4** -> **Condition (All Parts Available)** ("Yes" decision)
 
-**Task [Assemble Bicycle (Engineering)]** -> **Task [Ship Bicycle (Sales)]**
+**Condition (All Parts Available)** -> **Task [Assemble Bicycle]**
 
-**Task [Ship Bicycle (Sales)]** -> **Event End O** (Process Finished)
+**Task [Assemble Bicycle]** -> **Task [Ship Bicycle]**
+
+**Task [Ship Bicycle]** -> **Event End - O**
+
+**XOR Gateway 4** -> **Condition (Missing Parts)** ("No" decision)
+
+**Condition (Missing Parts)** -> **Event End - O** (Process Terminated)
+
 
 **Actor Mapping:**
 
 * Sales Department: [Receive Order, Inform Storehouse and Engineering Department, Ship Bicycle]
-* Storehouse: [Process Part List, Reserve Part, Backorder Part, Repeat for Each Part]
+* Storehouse: [Process Part List, Reserve Part, Back-Order Part]
 * Engineering Department: [Prepare for Assembly, Assemble Bicycle]
