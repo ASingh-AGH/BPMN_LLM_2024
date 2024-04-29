@@ -2,10 +2,16 @@
 BPMN LLM Engineering Thesis 2024 Prompts and Outputs
 
 
+# Experiment 1 Baseline
+
+### Baseline BIKE
+Prompt description with some direction on using an intermediate BPMN notation
+    3 Diagrams
+
+
 # Experiment 2 Prompt Engineering 
 
-45 total prompts by 3 models
-
+45 total prompts by 3 models of Two Shot + APE + DSP
 
     To note: all prompts were executed in a new chat- none of them are chained.
 
@@ -55,3 +61,17 @@ Prompt description with some direction on using an intermediate BPMN notation an
 ### Two Shot (O and 2 combo) + APE 2 + DSP
 Prompt description with some direction on using an intermediate BPMN notation and one detailed specific example snippet, one general example snippet, alongside alongside the phrase "Let’s work this out in a step by step way to be sure we have the right answer", the keyword "Hint" and a guided focused prompt to have a "well-defined workflow, avoiding common modeling issues like deadlocks and unconnected broken flows" 
 
+
+# Experiment 3 Prompt Diversity
+
+### Baseline COMPUTER
+Prompt description with some direction on using an intermediate BPMN notation
+    3 Diagrams
+
+
+# Ground Truth
+
+Ideal Prompt 1, 
+Ideal Prompt 2 
+Ground truth 1 Fredrich  
+ground truth 2 Mine
