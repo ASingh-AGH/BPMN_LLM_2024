@@ -15,47 +15,31 @@
     Condition (Describe Condition 2) -> Event End O
 
     Process description: A small company manufactures customized bicycles. Whenever the sales department receives an order, a new process instance is created. A member of the sales 
-    department can then reject or accept the order for a customized bike. In the former case, the process instance is nished. In the latter case, the storehouse and the engineering department are 
-    informed. The storehouse immediately processes the part list of the order and checks the required quantity of each part. If the part is available in- hause, it is reserved. If it is not available, it is 
+    department can then reject or accept the order for a customized bike. In the former case, the process instance is finished. In the latter case, the storehouse and the engineering department are 
+    informed. The storehouse immediately processes the part list of the order and checks the required quantity of each part. If the part is available in-house, it is reserved. If it is not available, it is 
     back-ordered. This procedure is repeated for each item on the part list. In the meantime, the engineering department prepares everything for the assembling of the ordered bicycle. If the 
-    storehouse successfully reserved or back-ordered every item of the part list and the preparation activity has nished, the engineering department assembles the bicycle. Afterwards, the sales 
+    storehouse successfully reserved or back-ordered every item of the part list and the preparation activity has finished, the engineering department assembles the bicycle. Afterwards, the sales 
     department ships the bicycle to the customer and nishes the process instance
 
 ## Response
 ### BPMN Model for Customized Bicycle Manufacturing
 
-**Start Event O -> Task [Receive Order]** (Sales Department)
-
+**Start Event O -> Task [Receive Order]** (Sales Department)*
 **Task [Receive Order]** -> **Exclusive Gateway 1**
-
 **Exclusive Gateway 1** -> **(Rejected)** Task [Reject Order] (Sales Department) -> **Event End O**
-
-**Exclusive Gateway 1** -> **(Accepted)** Task [Inform Storehouse and Engineering] (Sales Department)
-
+**Exclusive Gateway 1** -> **(Accepted)** Task [Inform Storehouse and Engineering] (Sales Department*
 **Task [Inform Storehouse and Engineering]** -> **Parallel Gateway 2**
-
-**Parallel Gateway 2** -> Task [Process Part List] (Storehouse)
-
+**Parallel Gateway 2** -> Task [Process Part List] (Storehouse*
 **Task [Process Part List]** -> **Exclusive Gateway 3**
-
 **Exclusive Gateway 3** -> **(In Stock)** Task [Reserve Part] (Storehouse) -> **Loop Gateway 4**
-
 **Exclusive Gateway 3** -> **(Out of Stock)** Task [Back-order Part] (Storehouse) -> **Loop Gateway 4**
-
-**Loop Gateway 4** -> **(More Parts?)** XOR Gateway 5
-
-**XOR Gateway 5** -> **(No)** Task [Parts Ready] (Storehouse)
-
+**Loop Gateway 4** -> **(More Parts?)** XOR Gateway *
+**XOR Gateway 5** -> **(No)** Task [Parts Ready] (Storehouse*
 **XOR Gateway 5** -> **(Yes)** Task [Process Part List] (Storehouse) -> **Loop Gateway 4**
-
-**Parallel Gateway 2** -> Task [Prepare for Assembly] (Engineering)
-
+**Parallel Gateway 2** -> Task [Prepare for Assembly] (Engineering*
 **Task [Parts Ready] (Storehouse)** -> **Synchronize Gateway 6**
-
 **Task [Prepare for Assembly] (Engineering)** -> **Synchronize Gateway 6**
-
-**Synchronize Gateway 6** -> **(Both Ready)** Task [Assemble Bicycle] (Engineering)
-
+**Synchronize Gateway 6** -> **(Both Ready)** Task [Assemble Bicycle] (Engineering*
 **Task [Assemble Bicycle] (Engineering)** -> Task [Ship to Customer] (Sales Department) -> **Event End O**
 
 **Actor Mapping:**
