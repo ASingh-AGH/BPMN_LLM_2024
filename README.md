@@ -11,7 +11,7 @@ Prompt description with some direction on using an intermediate BPMN notation
 
 # Experiment 2 Prompt Engineering 
 
-45 total prompts by 3 models of Two Shot + APE + DSP
+45 total prompts by 5 models of Two Shot + APE + DSP  and Two Shot + APE 2 + DSP 
 
     To note: all prompts were executed in a new chat- none of them are chained.
 
